@@ -1,4 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('user.db');
+const path = require('path');
+const dbPath = path.resolve(__dirname, '../merchants.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the merchants database.');
+});
 
 module.exports = db;

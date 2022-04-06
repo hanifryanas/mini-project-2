@@ -4,3 +4,5 @@ const fs = require('fs');
 
 router.get('/', controllerProducts.getAllProducts);
 router.get('/:productName', controllerProducts.getProductByName);
+
+module.exports = router;

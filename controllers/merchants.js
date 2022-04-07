@@ -1,4 +1,5 @@
 const merchantServiceModel = require('../models/merchantService.js');
+const jwt = require('jsonwebtoken');
 
 class controllerMerchants{
     static async getMerchantByName(req, res){
@@ -53,7 +54,7 @@ class controllerMerchants{
         else{
             merchantServiceModel.updateMerchant(merchantId, merchant)
             .then(() => {
-                res.status(200).json(merchant);
+                res.status(201).json(merchant);
             })
             .catch(err => {
                 res.status(500).json(err);
@@ -64,11 +65,29 @@ class controllerMerchants{
         const merchantId = req.params.id;
         merchantServiceModel.deleteMerchant(merchantId)
         .then(() => {
-            res.status(200).send('Merchant deleted');
+            res.status(201).send('Merchant deleted');
         })
         .catch(err => {
             res.status(500).json(err);
         });
+    }
+    static async login(req, res){
+        const userData = req.body;
+        const merchant = await merchantServiceModel.findMerchantByEmail(userData.email);
+        if(merchant){
+            if(merchant.password === userData.password){
+                const token = jwt.sign({
+                    name: merchant.name
+                }, 'xxxxxxxxxxx');
+                res.status(200).json({ token });
+            }
+            else{
+                res.status(401).json({ message: 'wrong password!'});
+            }
+        }
+        else{
+            res.status(401).json({ message: 'email does not exist!'});
+        }
     }
 }
 

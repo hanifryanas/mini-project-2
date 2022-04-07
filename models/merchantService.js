@@ -15,6 +15,20 @@ class merchantServiceModel{
             });
         });
     }
+    static findMerchantByEmail(merchantEmail){
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.get(`SELECT * FROM merchants WHERE email = ?`, [merchantEmail], (err, merchant) => {
+                    if(err){
+                        reject(err);
+                    }
+                    else{
+                        resolve(merchant);
+                    }
+                });
+            });
+        });
+    }
     static getMerchantByEmail(merchantEmail){
         return new Promise((resolve, reject) => {
             db.serialize(() => {

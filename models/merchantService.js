@@ -1,6 +1,21 @@
 const db = require('../config/db');
 
 class merchantServiceModel{
+    static findMerchantById(merchantId){
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.get(`SELECT * FROM merchants WHERE id = ?`, [merchantId], (err, merchant) => {
+                    if(err){
+                        reject(err);
+                    }
+                    else{
+                        resolve(merchant);
+                    }
+                });
+            });
+        });
+    }
+
     static findMerchantByName(merchantName){
         return new Promise((resolve, reject) => {
             db.serialize(() => {
@@ -15,6 +30,7 @@ class merchantServiceModel{
             });
         });
     }
+
     static findMerchantByEmail(merchantEmail){
         return new Promise((resolve, reject) => {
             db.serialize(() => {
@@ -29,25 +45,13 @@ class merchantServiceModel{
             });
         });
     }
-    static getMerchantByEmail(merchantEmail){
-        return new Promise((resolve, reject) => {
-            db.serialize(() => {
-                db.get(`SELECT * FROM merchants WHERE email = ?`, [merchantEmail], (err, merchant) => {
-                    if(err){
-                        reject(err);
-                    }
-                    else{
-                        resolve(merchant);
-                    }
-                });
-            });
-        });
-    }
+
     static createMerchant(merchant){
         return new Promise((resolve, reject) => {
+            let dateNow = new Date();
             db.serialize(() => {
-                db.run(`INSERT INTO merchants (name, email, password, address, phone, join_date, last_login) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
-                [merchant.name, merchant.email, merchant.password, merchant.address, merchant.phone, merchant.join_date, merchant.last_login], function(err){
+                db.run(`INSERT INTO merchants (name, email, password, address, phone, join_date) VALUES (?, ?, ?, ?, ?, ?)`, 
+                [merchant.name, merchant.email, merchant.password, merchant.address, merchant.phone, dateNow], function(err){
                     if(err){
                         reject(err);
                     }
@@ -58,35 +62,8 @@ class merchantServiceModel{
             });
         });
     }
-    static getMerchantByName(merchantName){
-        return new Promise((resolve, reject) => {
-            db.serialize(() => {
-                db.get(`SELECT * FROM merchants WHERE name = ?`, [merchantName], (err, merchant) => {
-                    if(err){
-                        reject(err);
-                    }
-                    else{
-                        resolve(merchant);
-                    }
-                });
-            });
-        });
-    }
-    static getMerchantById(merchantId){
-        return new Promise((resolve, reject) => {
-            db.serialize(() => {
-                db.get(`SELECT * FROM merchants WHERE id = ?`, [merchantId], (err, merchant) => {
-                    if(err){
-                        reject(err);
-                    }
-                    else{
-                        resolve(merchant);
-                    }
-                });
-            });
-        });
-    }
-    static getAllMerchants(){
+
+    static findAllMerchants(){
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.all(`SELECT * FROM merchants`, (err, merchants) => {
@@ -100,11 +77,11 @@ class merchantServiceModel{
             });
         });
     }
-    static updateMerchant(merchantId, merchant){
+
+    static checkAdmin(merchantName, merchantPassword){
         return new Promise((resolve, reject) => {
             db.serialize(() => {
-                db.run(`UPDATE merchants SET name = ?, email = ?, password = ?, address = ?, phone = ?, join_date = ?, last_login = ? WHERE id = ?`, 
-                [merchant.name, merchant.email, merchant.password, merchant.address, merchant.phone, merchant.join_date, merchant.last_login, merchantId], function(err){
+                db.get(`SELECT * FROM merchants WHERE name = ? AND password = ?`, [merchantName, merchantPassword], (err, merchant) => {
                     if(err){
                         reject(err);
                     }
@@ -115,7 +92,40 @@ class merchantServiceModel{
             });
         });
     }
-    static deleteMerchant(merchantId){
+
+    static updateMerchantById(merchantId, merchant){
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run(`UPDATE merchants SET name = ?, email = ?, password = ?, address = ?, phone = ?,  WHERE id = ?`, 
+                [merchant.name, merchant.email, merchant.password, merchant.address, merchant.phone, merchantId], function(err){
+                    if(err){
+                        reject(err);
+                    }
+                    else{
+                        resolve(merchant);
+                    }
+                });
+            });
+        });
+    }
+
+    static updateMerchantByName(merchantName, merchant){
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run(`UPDATE merchants SET name = ?, email = ?, password = ?, address = ?, phone = ?,  WHERE name = ?`, 
+                [merchant.name, merchant.email, merchant.password, merchant.address, merchant.phone,, merchantName], function(err){
+                    if(err){
+                        reject(err);
+                    }
+                    else{
+                        resolve(merchant);
+                    }
+                });
+            });
+        });
+    }
+
+    static deleteMerchantById(merchantId){
         return new Promise((resolve, reject) => {
             db.serialize(() => {
                 db.run(`DELETE FROM merchants WHERE id = ?`, [merchantId], function(err){
@@ -124,6 +134,21 @@ class merchantServiceModel{
                     }
                     else{
                         resolve(merchantId);
+                    }
+                });
+            });
+        });
+    }
+    
+    static deleteMerchantByName(merchantName){
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run(`DELETE FROM merchants WHERE name = ?`, [merchantName], function(err){
+                    if(err){
+                        reject(err);
+                    }
+                    else{
+                        resolve(merchantName);
                     }
                 });
             });

@@ -2,21 +2,19 @@ const db = require('./db')
 
 const createMerchants = `
     CREATE TABLE merchants(
-        id INTEGER AUTO_INCREMENT,
+        id INTEGER PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         address TEXT NOT NULL,
         phone INTEGER NOT NULL,
-        join_date TEXT NOT NULL,
-        last_login TEXT NOT NULL,
-        PRIMARY KEY(id)
+        join_date TEXT NOT NULL
     )
 `
 
 const createProducts = `
     CREATE TABLE products(
-        id INTEGER IDENTITY(1,1) PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         merchant_id INTEGER,
         name TEXT NOT NULL,
         quantity INTEGER NOT NULL,
@@ -28,14 +26,14 @@ const createProducts = `
 db.serialize(() => {
     db.run(createMerchants, (err) => {
         if (!err) {
-            console.log('table created')
+            console.log('table merchants created')
         } else {
             console.log(err)
         }
     })
     db.run(createProducts, (err) => {
         if (!err) {
-            console.log('table created')
+            console.log('table products created')
         } else {
             console.log(err)
         }

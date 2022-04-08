@@ -8,8 +8,7 @@ const createMerchants = `
         password TEXT NOT NULL,
         address TEXT NOT NULL,
         phone INTEGER NOT NULL,
-        join_date TEXT NOT NULL,
-        last_login TEXT NOT NULL
+        join_date TEXT NOT NULL
     )
 `
 

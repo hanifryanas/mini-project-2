@@ -14,7 +14,6 @@ class controllerProducts {
     static async getProductById(req, res) {
         const merchantId = req.params.id;
         const productId = req.params.productId;
-        console.log(merchantId, productId);
         const product = await productServiceModel.findProductById(merchantId, productId);
         if (product) {
             res.status(200).json(product);
@@ -36,7 +35,6 @@ class controllerProducts {
     }
     static async createProduct(req, res) {
         const merchantId = req.params.id;
-        console.log(merchantId);
         const product = req.body;
         const newProduct = await productServiceModel.createProduct(merchantId, product);
         if (newProduct) {
@@ -77,7 +75,7 @@ class controllerProducts {
         if (productId) {
             const deletedProduct = await productServiceModel.deleteProductById(merchantId, productId);
             if (deletedProduct) {
-                res.status(201).json(`product ${productId} has been deleted`);
+                res.status(204).json(`product ${productId} has been deleted`);
             }
             else {
                 res.status(404).send('product not found');
@@ -86,7 +84,7 @@ class controllerProducts {
         else if (productName) {
             const deletedProduct = await productServiceModel.deleteProductByName(merchantId, productName);
             if (deletedProduct) {
-                res.status(201).json(`product ${productName} has been deleted`);
+                res.status(204).json(`product ${productName} has been deleted`);
             }
             else {
                 res.status(404).send('product not found');

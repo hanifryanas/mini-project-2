@@ -1,3 +1,4 @@
+##API-CONTRACT
 
 #Merchants
 * Merchant User object (merchant_user_object)
@@ -274,7 +275,7 @@
 
 **GET /merchant/id/:id/products**
 ----
-  Returns all products in the specific merchant.
+  Returns all products in the specified merchant.
 * **URL Params**  
   *Required:* `id=[integer]`
 * **Data Params**  
@@ -300,7 +301,7 @@
 
 **GET /merchants/id/:id/products/:productId**
 ----
-  Returns the specified product by id in the merchant.
+  Returns the specified product by id in the specified merchant.
 * **URL Params**  
   *Required:* `id=[integer]` & `productId=[integer]`
 * **Data Params**  
@@ -316,7 +317,7 @@
 
   **GET /merchants/id/:id/products/name/:productName**
 ----
-  Returns the specified product by name in the merchant.
+  Returns the specified product by name in the specified merchant.
 * **URL Params**  
   *Required:* `id=[integer]` & `productName=[string]`
 * **Data Params**  
@@ -330,243 +331,122 @@
   * **Code:** 404  
   **Content:** `{ error : "product not found" }`  
 
-**POST /products**
+**POST /merchants/id/:id/products**
 ----
-  Creates a new Product and returns the new object.
+  Creates a new Product in the specified merchant and returns the new object.
 * **URL Params**  
-  None
+  *Required:* `id=[integer]`
 * **Data Params**  
 ```
   {
     name: string
-    cost: float(2)
-    available_quantity: integer
+    quantity: integer
+    price: integer
   }
 ```
 * **Headers**  
-  Content-Type: application/json  
+  Content-Type: application/json
+  Authorization: Bearer {web_token}  
 * **Success Response:**  
-* **Code:** 200  
+* **Code:** 201 
   **Content:**  `{ <product_object> }` 
+* **Error Response:**
+  * **Code:** 401
+  **Content:** `{ error : "unauthorized" }`
+  OR
+  * **Code:** 404
+  **Content:** `{ error : "product not created" }`
 
-**PATCH /products/:id**
+**PUT /merchants/id/:id/products/:productId**
 ----
-  Updates fields on the specified product and returns the updated object.
+  Updates fields on the specified product by id in the specified merchant and returns the updated object.
+
 * **URL Params**  
-  *Required:* `id=[integer]`
+  *Required:* `id=[integer]` & `productId=[integer]`
 * **Data Params**  
 ```
   {
   	name: string
-    cost: float(2)
-    available_quantity: integer
+    quantity: integer
+    price: integer
   }
 ```
 * **Headers**  
   Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
+  Authorization: Bearer {web_token}
 * **Success Response:** 
 * **Code:** 200  
   **Content:**  `{ <product_object> }`  
 * **Error Response:**  
-  * **Code:** 404  
-  **Content:** `{ error : "Product doesn't exist" }`  
+  * **Code:** 401
+  **Content:** `{ error : "unauthorized" }`
   OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
+  * **Code:** 404
+  **Content:** `{ error : "product not found" }`
 
-**DELETE /products/:id**
+**PUT /merchants/id/:id/products/name/:productName**
 ----
-  Deletes the specified product.
+  Updates fields on the specified product by product name in the specified merchant and returns the updated object.
+
 * **URL Params**  
-  *Required:* `id=[integer]`
+  *Required:* `id=[integer]` & `productName=[string]`
+* **Data Params**  
+```
+  {
+  	name: string
+    quantity: integer
+    price: integer
+  }
+```
+* **Headers**  
+  Content-Type: application/json  
+  Authorization: Bearer {web_token}
+* **Success Response:** 
+* **Code:** 200  
+  **Content:**  `{ <product_object> }`  
+* **Error Response:**  
+  * **Code:** 401
+  **Content:** `{ error : "unauthorized" }`
+  OR  
+  * **Code:** 404
+  **Content:** `{ error : "product not found" }`
+
+**DELETE /merchants/id/:id/products/:productId**
+----
+  Deletes the specified product by id in the specified merchant.
+* **URL Params**  
+  *Required:* `id=[integer]` & `productId=[integer]`
 * **Data Params**  
   None
 * **Headers**  
   Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
+  Authorization: Bearer {web_token}
 * **Success Response:**  
   * **Code:** 204
+  **Content:** `{product has been deleted}`
 * **Error Response:**  
+  * **Code:** 401
+  **Content:** `{ error : "unauthorized" }`
+  OR
   * **Code:** 404  
-  **Content:** `{ error : "Product doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
+  **Content:** `{ error : "product not found" }`  
 
-#Orders
-* Order object
-```
-{
-  id: integer
-  user_id: <user_id>
-  total: float(2)
-  products: [
-              { 
-                product: <product_id>,
-                quantity: integer 
-              },
-              { 
-                product: <product_id>,
-                quantity: integer 
-              },
-              { 
-                product: <product_id>,
-                quantity: integer 
-              },
-            ]
-  created_at: datetime(iso 8601)
-  updated_at: datetime(iso 8601)
-}
-```
-**GET /orders**
+**DELETE /merchants/id/:id/products/name/:productName**
 ----
-  Returns all users in the system.
+  Deletes the specified product by productName in the specified merchant.
 * **URL Params**  
-  None
+  *Required:* `id=[integer]` & `productName=[string]`
 * **Data Params**  
   None
 * **Headers**  
   Content-Type: application/json  
-* **Success Response:** 
-* **Code:** 200  
-  **Content:**  
-```
-{
-  orders: [
-           {<order_object>},
-           {<order_object>},
-           {<order_object>}
-         ]
-}
-``` 
-
-**GET /orders/:id**
-----
-  Returns the specified order.
-* **URL Params**  
-  *Required:* `id=[integer]`
-* **Data Params**  
-  None
-* **Headers**  
-  Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
+  Authorization: Bearer {web_token}
 * **Success Response:**  
-* **Code:** 200  
-  **Content:**  `{ <order_object> }` 
+  * **Code:** 204
+  **Content:** `{product has been deleted}`
 * **Error Response:**  
+  * **Code:** 401
+  **Content:** `{ error : "unauthorized" }`
+  OR
   * **Code:** 404  
-  **Content:** `{ error : "Order doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
-
-**GET /orders/:id/products**
-----
-  Returns all Products associated with the specified order.
-* **URL Params**  
-  *Required:* `id=[integer]`
-* **Data Params**  
-  None
-* **Headers**  
-  Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
-* **Success Response:**  
-* **Code:** 200  
-  **Content:**  
-```
-{
-  products: [
-           {<product_object>},
-           {<product_object>},
-           {<product_object>}
-         ]
-}
-```
-* **Error Response:**  
-  * **Code:** 404  
-  **Content:** `{ error : "Order doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
-
-**GET /orders/:id/user**
-----
-  Returns all Users associated with the specified order.
-* **URL Params**  
-  *Required:* `id=[integer]`
-* **Data Params**  
-  None
-* **Headers**  
-  Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
-* **Success Response:** `{ <user_object> }`  
-* **Error Response:**  
-  * **Code:** 404  
-  **Content:** `{ error : "Order doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
-
-**POST /orders**
-----
-  Creates a new Order and returns the new object.
-* **URL Params**  
-  None
-* **Data Params**  
-```
-  {
-  	user_id: <user_id>
-  	product: <product_id>,
-  	quantity: integer 
-  }
-```
-* **Headers**  
-  Content-Type: application/json  
-* **Success Response:**  
-* **Code:** 200  
-  **Content:**  `{ <order_object> }` 
-
-**PATCH /orders/:id**
-----
-  Updates fields on the specified order and returns the updated object.
-* **URL Params**  
-  *Required:* `id=[integer]`
-* **Data Params**  
-```
-  {
-  	product: <product_id>,
-  	quantity: integer 
-  }
-```
-* **Headers**  
-  Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
-* **Success Response:**  
-* **Code:** 200  
-  **Content:**  `{ <order_object> }` 
-* **Error Response:**  
-  * **Code:** 404  
-  **Content:** `{ error : "Order doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
-
-**DELETE /orders/:id**
-----
-  Deletes the specified order.
-* **URL Params**  
-  *Required:* `id=[integer]`
-* **Data Params**  
-  None
-* **Headers**  
-  Content-Type: application/json  
-  Authorization: Bearer `<OAuth Token>`
-* **Success Response:** 
-  * **Code:** 204 
-* **Error Response:**  
-  * **Code:** 404  
-  **Content:** `{ error : "Order doesn't exist" }`  
-  OR  
-  * **Code:** 401  
-  **Content:** `{ error : error : "You are unauthorized to make this request." }`
+  **Content:** `{ error : "product not found" }` 

@@ -74,10 +74,12 @@ Lastly, here for detailed architecture, relation, and contract of this API, you 
 * **URL Params**  
   None
 * **Data Params**  
+```
   {
     username: string("admin")
     password: string("admin")
   }
+```
 * **Headers**  
   Content-Type: application/json  
 * **Success Response:** 
@@ -107,10 +109,12 @@ Lastly, here for detailed architecture, relation, and contract of this API, you 
 * **URL Params**  
   None
 * **Data Params**  
+```
   {
     username: string("admin")
     password: string("admin")
   }
+```
 * **Headers**  
   Content-Type: application/json  
 * **Success Response:** 

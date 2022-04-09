@@ -3,7 +3,7 @@ const db = require('./db')
 const createMerchants = `
     CREATE TABLE merchants(
         id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL UNIQUE,
+        username TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
         address TEXT NOT NULL,

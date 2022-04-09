@@ -5,6 +5,7 @@ const Middleware = require('../middleware/checkAuth.js');
 router.get('/id/:id', controllerMerchants.getMerchantById);
 router.get('/name/:name', controllerMerchants.getMerchantByName);
 router.get('/admin', Middleware.checkAdmin, controllerMerchants.getAllMerchants);
+router.get('/admin/products', Middleware.checkAdmin, controllerMerchants.getAllMerchantsProducts);
 router.post('/', controllerMerchants.createMerchant);
 router.post('/login', controllerMerchants.loginMerchant);
 router.put('/id/:id', Middleware.checkAuth, controllerMerchants.updateMerchant);

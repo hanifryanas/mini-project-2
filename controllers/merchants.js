@@ -1,148 +1,162 @@
 const merchantServiceModel = require('../models/merchantService.js');
 const jwt = require('jsonwebtoken');
 
-class controllerMerchants{
-    static async getMerchantById(req, res){
+class controllerMerchants {
+    static async getMerchantById(req, res) {
         const merchantId = req.params.id;
-        const merchant = await merchantServiceModel.findMerchantById(merchantId);        
-        if(merchant){
+        const merchant = await merchantServiceModel.findMerchantById(merchantId);
+        if (merchant) {
             res.status(200).json(merchant);
         }
-        else{
+        else {
             res.status(404).send('merchant not found');
         }
     }
-
-    static async getMerchantByName(req, res){
+    static async getMerchantByName(req, res) {
         const merchantName = req.params.name;
         const merchant = await merchantServiceModel.findMerchantByName(merchantName);
-        if(merchant){
+        if (merchant) {
             res.status(200).json(merchant);
         }
-        else{
+        else {
             res.status(404).send('merchant not found');
         }
     }
-
-    static async getAllMerchants(req, res){
+    static async getAllMerchants(req, res) {
         const merchants = await merchantServiceModel.findAllMerchants();
-        if(merchants){
+        if (merchants) {
             res.status(200).json(merchants);
         }
-        else{
+        else {
             res.status(404).send('merchant not found');
         }
     }
-
-    static async createMerchant(req, res){
+    static async getAllMerchantsProducts(req, res) {
+        const totalDataProducts = await merchantServiceModel.findAllMerchantsProducts();
+        if (totalDataProducts) {
+            res.status(200).json(totalDataProducts);
+        }
+        else {
+            res.status(404).send('data not found');
+        }
+    }
+    static async createMerchant(req, res) {
         let merchant = req.body;
         const existingMerchantName = await merchantServiceModel.findMerchantByName(req.body.name);
         const existingMerchantEmail = await merchantServiceModel.findMerchantByEmail(req.body.email);
-        if(existingMerchantName){
+        if (existingMerchantName) {
             res.status(400).send('merchant name already used');
         }
-        else if(existingMerchantEmail){
+        else if (existingMerchantEmail) {
             res.status(400).send('merchant email already used');
         }
-        else{
+        else {
             merchantServiceModel.createMerchant(merchant)
-            .then(() => {
-                res.status(201).json(merchant);
-            })
-            .catch(err => {
-                res.status(500).json(err);
-            });
+                .then(() => {
+                    res.status(201).json(merchant);
+                })
+                .catch(err => {
+                    res.status(500).json(err);
+                });
         }
     }
-
-    static async updateMerchant(req, res){
+    static async updateMerchant(req, res) {
         const merchantId = req.params.id;
         const merchantName = req.params.name;
         const merchant = req.body;
-        if(merchantId){
+        if (merchantId) {
             const existingMerchantId = await merchantServiceModel.findMerchantById(req.body.id);
-            if(!existingMerchantId){
+            if (!existingMerchantId) {
                 res.status(400).send('merchant not found');
             }
-            else{
+            else {
                 merchantServiceModel.updateMerchantById(merchantId, merchant)
-                .then(() => {
-                    res.status(201).json(merchant);
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
+                    .then(() => {
+                        res.status(201).json(merchant);
+                    })
+                    .catch(err => {
+                        res.status(500).json(err);
+                    });
             }
         }
-        else if(merchantName){
+        else if (merchantName) {
             const existingMerchantName = await merchantServiceModel.findMerchantByName(req.body.name);
-            if(!existingMerchantName){
+            if (!existingMerchantName) {
                 res.status(400).send('merchant not found');
             }
-            else{
+            else {
                 merchantServiceModel.updateMerchantByName(merchantName, merchant)
-                .then(() => {
-                    res.status(201).json(merchant);
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
+                    .then(() => {
+                        res.status(201).json(merchant);
+                    })
+                    .catch(err => {
+                        res.status(500).json(err);
+                    });
             }
         }
     }
-
-    static async deleteMerchant(req, res){
+    static async deleteMerchant(req, res) {
         const merchantId = req.params.id;
         const merchantName = req.params.name;
-        if(merchantId){
+        if (merchantId) {
             const existingMerchantId = await merchantServiceModel.findMerchantById(merchantId);
-            if(!existingMerchantId){
+            if (!existingMerchantId) {
                 res.status(400).send('merchant not found');
             }
-            else{
+            else {
                 merchantServiceModel.deleteMerchantById(merchantId)
-                .then(() => {
-                    res.status(201).send('merchant deleted');
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
+                    .then(() => {
+                        res.status(201).send('merchant deleted');
+                    })
+                    .catch(err => {
+                        res.status(500).json(err);
+                    });
             }
         }
-        else if(merchantName){
+        else if (merchantName) {
             const existingMerchantName = await merchantServiceModel.findMerchantByName(merchantName);
-            if(!existingMerchantName){
+            if (!existingMerchantName) {
                 res.status(400).send('merchant not found');
             }
-            else{
+            else {
                 merchantServiceModel.deleteMerchantByName(merchantName)
-                .then(() => {
-                    res.status(201).send('merchant deleted');
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
+                    .then(() => {
+                        res.status(201).send('merchant deleted');
+                    })
+                    .catch(err => {
+                        res.status(500).json(err);
+                    });
             }
         }
     }
-    
-    static async loginMerchant(req, res){
+    static async loginMerchant(req, res) {
         const userData = req.body;
         const merchantName = await merchantServiceModel.findMerchantByName(userData.name);
         const merchantEmail = await merchantServiceModel.findMerchantByEmail(userData.email);
-        if(merchantName || merchantEmail){
-            if(merchant.password === userData.password){
+        if (merchantName) {
+            if (merchantName.password === userData.password) {
                 const token = jwt.sign({
-                    name: merchant.name
-                },'secret');
+                    name: merchantName.name
+                }, 'secret');
                 res.status(200).json({ token });
             }
-            else{
-                res.status(401).json({ message: 'wrong password!'});
+            else {
+                res.status(401).json({ message: 'wrong password!' });
             }
         }
-        else{
-            res.status(401).json({ message: 'username or email does not exist!'});
+        else if (merchantEmail) {
+            if (merchantEmail.password === userData.password) {
+                const token = jwt.sign({
+                    name: merchantEmail.name
+                }, 'secret');
+                res.status(200).json({ token });
+            }
+            else {
+                res.status(401).json({ message: 'wrong password!' });
+            }
+        }
+        else {
+            res.status(401).json({ message: 'username or email does not exist!' });
         }
     }
 }

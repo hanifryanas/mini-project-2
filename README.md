@@ -1,5 +1,5 @@
 **#first-things-first**
-To run this program, you need to install the following packages to this folder by using this command:
+to run this program, you need to install the following packages to this folder by using this command:
 
 ```
 * npm install dotenv

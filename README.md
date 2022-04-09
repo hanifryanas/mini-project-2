@@ -1,10 +1,26 @@
-##Simple Architecture Diagram of this API Project
+**#first-things-first**
+To run this program, you need to install the following packages to this folder by using this command:
+
+```
+* npm install dotenv
+* npm install express
+* npm install nodemon
+* npm install sqlite3
+* npm install body-parser
+* npm install jsonwebtoken
+```
+
+And if you want to modify the database, you have to modify and run the ./config/setup.js file first before start the whole program.
+
+Lastly, here for detailed architecture, relation, and contract of this API, you can read the following descripton below. Thank you
+
+**Simple Architecture Diagram of this API Project**
 ![Arc Diagram](simple_architecture_diagram_minpro2.svg)
 ----
-##Entity Relationship Diagram of this API Project
+**Entity Relationship Diagram of this API Project**
 ![ER Diagram](ERD_minpro2.svg)
 
-##API-CONTRACT
+**API-CONTRACT**
 
 #Merchants
 * Merchant User object (merchant_user_object)

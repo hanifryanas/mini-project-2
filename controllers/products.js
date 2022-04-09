@@ -11,10 +11,11 @@ class controllerProducts {
             res.status(404).send('products not found');
         }
     }
-    static async getProductByName(req, res) {
+    static async getProductById(req, res) {
         const merchantId = req.params.id;
-        const productName = req.params.productName;
-        const product = await productServiceModel.findProductByName(merchantId, productName);
+        const productId = req.params.productId;
+        console.log(merchantId, productId);
+        const product = await productServiceModel.findProductById(merchantId, productId);
         if (product) {
             res.status(200).json(product);
         }
@@ -22,11 +23,10 @@ class controllerProducts {
             res.status(404).send('product not found');
         }
     }
-    static async getProductById(req, res) {
+    static async getProductByName(req, res) {
         const merchantId = req.params.id;
-        const productId = req.params.productId;
-        console.log(merchantId, productId);
-        const product = await productServiceModel.findProductById(merchantId, productId);
+        const productName = req.params.productName;
+        const product = await productServiceModel.findProductByName(merchantId, productName);
         if (product) {
             res.status(200).json(product);
         }

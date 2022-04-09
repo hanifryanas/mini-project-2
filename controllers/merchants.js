@@ -106,7 +106,7 @@ class controllerMerchants {
             else {
                 merchantServiceModel.deleteMerchantById(merchantId)
                     .then(() => {
-                        res.status(201).send('merchant deleted');
+                        res.status(204).send('merchant user deleted');
                     })
                     .catch(err => {
                         res.status(500).json(err);
@@ -121,7 +121,7 @@ class controllerMerchants {
             else {
                 merchantServiceModel.deleteMerchantByName(merchantName)
                     .then(() => {
-                        res.status(201).send('merchant deleted');
+                        res.status(204).send('merchant user deleted');
                     })
                     .catch(err => {
                         res.status(500).json(err);
@@ -141,7 +141,7 @@ class controllerMerchants {
                 res.status(200).json({ token });
             }
             else {
-                res.status(401).json({ message: 'wrong password!' });
+                res.status(401).json({ message: 'password is incorrect!' });
             }
         }
         else if (merchantEmail) {
@@ -152,7 +152,7 @@ class controllerMerchants {
                 res.status(200).json({ token });
             }
             else {
-                res.status(401).json({ message: 'wrong password!' });
+                res.status(401).json({ message: 'password is incorrect!' });
             }
         }
         else {

@@ -1,3 +1,9 @@
+##Simple Architecture Diagram of this API Project
+![Arc Diagram](simple_architecture_diagram_minpro2.svg)
+----
+##Entity Relationship Diagram of this API Project
+![ER Diagram](ERD_minpro2.svg)
+
 ##API-CONTRACT
 
 #Merchants
@@ -95,7 +101,7 @@
 * **Code:** 200  
   **Content:**
 ```
-{ merchants :[
+{ merchants_products :[
         {merchant_user_object & product_object},
         {merchant_user_object & product_object},
         {merchant_user_object & product_object},
@@ -242,7 +248,7 @@
   * **Code:** 400
   **Content:** `{ error : "merchant not found" }`
 
-  **DELETE /merchant/name/:name**
+**DELETE /merchant/name/:name**
 ----
   Deletes the specified user by name.
 * **URL Params**  
@@ -317,7 +323,7 @@
   * **Code:** 404  
   **Content:** `{ error : "product not found" }`  
 
-  **GET /merchants/id/:id/products/name/:productName**
+**GET /merchants/id/:id/products/name/:productName**
 ----
   Returns the specified product by name in the specified merchant.
 * **URL Params**  

@@ -61,7 +61,7 @@
 * **Success Response:** 
 * **Code:** 200  
   **Content:**
-  ```
+```
 {
   merchants :[
         {merchant_user_object},
@@ -70,7 +70,8 @@
         ...
         {merchant_user_object}
       ] 
-}```
+}
+```
 * **Error Response:**  
     * **Code:** 401  
   **Content:** `{ error : "you are not an admin" }`
@@ -93,7 +94,7 @@
 * **Success Response:** 
 * **Code:** 200  
   **Content:**
-  ```
+```
 { merchants :[
         {merchant_user_object & product_object},
         {merchant_user_object & product_object},
@@ -101,7 +102,8 @@
         ...
         {merchant_user_object & product_object}
       ]
-}```
+}
+```
 * **Error Response:**  
     * **Code:** 401  
   **Content:** `{ error : "you are not an admin" }`
